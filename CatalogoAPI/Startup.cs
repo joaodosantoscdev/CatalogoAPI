@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using CatalogoAPI.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using CatalogoAPI.Logging;
 
 
 namespace CatalogoAPI
@@ -40,7 +42,7 @@ namespace CatalogoAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -48,6 +50,14 @@ namespace CatalogoAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CatalogoAPI v1"));
             }
+
+            loggerFactory.AddProvider(
+                new CustomLogProvider(
+                    new CustomLogProviderConfiguration 
+                    {
+                        LogLevel = LogLevel.Information
+                    }
+                ));
 
             app.UseHttpsRedirection();
 
