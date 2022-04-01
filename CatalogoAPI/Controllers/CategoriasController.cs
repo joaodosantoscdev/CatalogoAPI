@@ -33,7 +33,7 @@ namespace MimicAPI.V1.Controllers
         {
             try
             {
-                // Example of ILogger interface usage for debugging purpose.
+                // Example of ILogger interface usage for debugging purposes.
                 // _logger.Log(LogLevel.Information, ">>>>>>>>>>>>>>>>>> ENTROU <<<<<<<<<<<<<<<<<<<<");
 
                 return await _context.Categorias.Include(c => c.Produtos).ToListAsync();    
