@@ -7,6 +7,7 @@ using CatalogoAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using CatalogoAPI.Repositories.Interfaces;
 
 namespace MimicAPI.V1.Controllers
 {
@@ -16,21 +17,27 @@ namespace MimicAPI.V1.Controllers
     {
         // Constructor and Dependencies
         #region DI Injected
-        private readonly CatalogoDbContext _context;
-        public ProdutosController(CatalogoDbContext context) 
+        private readonly IUnitOfWork _uof;
+        public ProdutosController( IUnitOfWork uof) 
         {
-            _context = context;
+            _uof = uof;
         }
         #endregion
 
         // GET Methods - Produtos Controller
         #region GET Methods
+        [HttpGet("produtoPreco")]
+        public ActionResult<IEnumerable<Produto>> GetProdutoPrecos()
+        {
+            return _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+        }
+
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetAllAsync()
+        public ActionResult<IEnumerable<Produto>> GetAll()
         {
             try 
             {
-                return await _context.Produtos.AsNoTracking().ToListAsync();
+                return _uof.ProdutoRepository.Get().ToList();
             }
             catch (Exception e)
             {
@@ -40,11 +47,11 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> GetByIdAsync(int id)
+        public ActionResult<Produto> GetById(int id)
         {
             try 
             {
-                var produtoFiltrado = await _context.Produtos.AsNoTracking().FirstOrDefaultAsync(p => p.ProdutoId == id);
+                var produtoFiltrado = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
                 if (produtoFiltrado == null) return NotFound();
             
                 return Ok(produtoFiltrado);
@@ -64,8 +71,8 @@ namespace MimicAPI.V1.Controllers
         {
             try 
             {
-                var produtoCriado = _context.Produtos.Add(produto);
-                _context.SaveChanges();
+                _uof.ProdutoRepository.Add(produto);
+                _uof.Commit();
 
                 return Ok(produto);
             } 
@@ -89,10 +96,10 @@ namespace MimicAPI.V1.Controllers
             {
                 if(id != produto.ProdutoId) return BadRequest();
 
-                var produtoAtualizado = _context.Produtos.Update(produto);
-                _context.SaveChanges();
+                _uof.ProdutoRepository.Update(produto);
+                _uof.Commit();
 
-                return Ok(produtoAtualizado);
+                return Ok();
             } 
             catch (Exception e)
             {
@@ -109,15 +116,15 @@ namespace MimicAPI.V1.Controllers
         {
             try 
             {            
-                var produtoFiltrado = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+                var produtoFiltrado = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
                  /* The Find(); method works too, searching first on memory,
                   but only if ID is a primary key */
 
                  // var produtoFiltrado = _context.Produtos.Find(id);
                 if (produtoFiltrado == null) return NotFound();
 
-                _context.Produtos.Remove(produtoFiltrado);
-                _context.SaveChanges();
+                _uof.ProdutoRepository.Delete(produtoFiltrado);
+                _uof.Commit();
 
                 return Ok(new {message = "Deletado"});
             }

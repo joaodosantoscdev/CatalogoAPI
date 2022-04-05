@@ -8,6 +8,8 @@ using CatalogoAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using CatalogoAPI.Logging;
+using CatalogoAPI.Repositories;
+using CatalogoAPI.Repositories.Interfaces;
 
 
 namespace CatalogoAPI
@@ -29,6 +31,8 @@ namespace CatalogoAPI
             services.AddDbContext<CatalogoDbContext>(
                 opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers()
                     .AddNewtonsoftJson( opt => 
