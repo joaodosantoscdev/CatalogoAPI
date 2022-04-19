@@ -10,7 +10,8 @@ using Microsoft.Extensions.Logging;
 using CatalogoAPI.Logging;
 using CatalogoAPI.Repositories;
 using CatalogoAPI.Repositories.Interfaces;
-
+using CatalogoAPI.DTOs.Mappings;
+using AutoMapper;
 
 namespace CatalogoAPI
 {
@@ -26,12 +27,19 @@ namespace CatalogoAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mappingConfig = new MapperConfiguration(
+                cfg => { cfg.AddProfile(new MappingProfile());
+                });
+            
+            IMapper mapper = mappingConfig.CreateMapper();
+
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<CatalogoDbContext>(
                 opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
 
+            services.AddSingleton(mapper);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllers()
