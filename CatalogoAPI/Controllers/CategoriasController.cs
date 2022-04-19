@@ -8,6 +8,7 @@ using CatalogoAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using CatalogoAPI.Repositories.Interfaces;
 
 namespace MimicAPI.V1.Controllers
 {
@@ -17,11 +18,11 @@ namespace MimicAPI.V1.Controllers
     {
         // Constructor and Dependencies
         #region DI Injected
-        private readonly CatalogoDbContext _context;
+        private readonly IUnitOfWork _uof;
         private readonly ILogger _logger;
-        public CategoriasController(CatalogoDbContext context, ILogger<CategoriasController> logger) 
+        public CategoriasController(IUnitOfWork uof, ILogger<CategoriasController> logger) 
         {
-            _context = context;
+            _uof = uof;
             _logger = logger;
         }
         #endregion
@@ -29,14 +30,14 @@ namespace MimicAPI.V1.Controllers
         // GET Methods - Categorias Controller
         #region GET Methods
         [HttpGet("produtos")]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutosAsync()
+        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutosAsync()
         {
             try
             {
                 // Example of ILogger interface usage for debugging purposes.
                 // _logger.Log(LogLevel.Information, ">>>>>>>>>>>>>>>>>> ENTROU <<<<<<<<<<<<<<<<<<<<");
 
-                return await _context.Categorias.Include(c => c.Produtos).ToListAsync();    
+                return _uof.CategoriaRepository.GetCategoriasProdutos().ToList();    
             }
             catch (Exception e)
             {
@@ -46,11 +47,11 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categoria>>> GetAllAsync()
+        public ActionResult<IEnumerable<Categoria>> GetAllAsync()
         {
             try
             {
-                return await _context.Categorias.ToListAsync();    
+                return _uof.CategoriaRepository.Get().ToList();    
             }
             catch (Exception e)
             {
@@ -61,11 +62,11 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categoria>> GetByIdAsync(int id)
+        public ActionResult<Categoria> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.Categorias.FirstOrDefaultAsync(c => c.CategoriaId == id); 
+                return _uof.CategoriaRepository.GetById(c => c.CategoriaId == id); 
             }
             catch (Exception e)
             {
@@ -82,8 +83,8 @@ namespace MimicAPI.V1.Controllers
         {
             try
             {
-                var produtoCriado = _context.Categorias.Add(categoria);
-                _context.SaveChanges();
+                _uof.CategoriaRepository.Add(categoria);
+                _uof.Commit();
 
                 return Ok();
             }
@@ -104,8 +105,8 @@ namespace MimicAPI.V1.Controllers
             {
                 if (id != categoria.CategoriaId) return BadRequest();
 
-                var categoriaAtualizada = _context.Categorias.Update(categoria);
-                _context.SaveChanges();
+                _uof.CategoriaRepository.Update(categoria);
+                _uof.Commit();
 
                 return Ok(new { message = "Atualizado" });
             }
@@ -124,11 +125,11 @@ namespace MimicAPI.V1.Controllers
         {
             try
             {
-                var categoriaFiltrada = _context.Categorias.FirstOrDefault(c => c.CategoriaId == id);
+                var categoriaFiltrada = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
                 if (categoriaFiltrada == null) return null;
 
-                _context.Remove(categoriaFiltrada);
-                _context.SaveChanges();
+                _uof.CategoriaRepository.Delete(categoriaFiltrada);
+                _uof.Commit();
 
                 return Ok(new { message = "Deletada"});   
             }

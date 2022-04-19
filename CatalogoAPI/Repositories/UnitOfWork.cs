@@ -10,7 +10,7 @@ namespace CatalogoAPI.Repositories
       private CategoriaRepository _categoriaRepository;
       public CatalogoDbContext _context;
 
-      public UnitOfWork(ProdutoRepository produtoRepository, CategoriaRepository categoriaRepository, CatalogoDbContext context)
+      public UnitOfWork(CatalogoDbContext context)
       {        
           _context = context;
       }

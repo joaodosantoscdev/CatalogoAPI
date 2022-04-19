@@ -18,7 +18,7 @@ namespace MimicAPI.V1.Controllers
         // Constructor and Dependencies
         #region DI Injected
         private readonly IUnitOfWork _uof;
-        public ProdutosController( IUnitOfWork uof) 
+        public ProdutosController(IUnitOfWork uof) 
         {
             _uof = uof;
         }
