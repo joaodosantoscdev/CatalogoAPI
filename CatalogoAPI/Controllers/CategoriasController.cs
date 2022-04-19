@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using CatalogoAPI.Repositories.Interfaces;
+using CatalogoAPI.DTOs;
+using AutoMapper;
 
 namespace MimicAPI.V1.Controllers
 {
@@ -20,24 +22,29 @@ namespace MimicAPI.V1.Controllers
         #region DI Injected
         private readonly IUnitOfWork _uof;
         private readonly ILogger _logger;
-        public CategoriasController(IUnitOfWork uof, ILogger<CategoriasController> logger) 
+        private readonly IMapper _mapper;
+        public CategoriasController(IUnitOfWork uof, ILogger<CategoriasController> logger, IMapper mapper) 
         {
             _uof = uof;
             _logger = logger;
+            _mapper = mapper;
         }
         #endregion
 
         // GET Methods - Categorias Controller
         #region GET Methods
         [HttpGet("produtos")]
-        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutosAsync()
+        public ActionResult<IEnumerable<CategoriaDTO>> GetCategoriasProdutosAsync()
         {
             try
             {
                 // Example of ILogger interface usage for debugging purposes.
                 // _logger.Log(LogLevel.Information, ">>>>>>>>>>>>>>>>>> ENTROU <<<<<<<<<<<<<<<<<<<<");
 
-                return _uof.CategoriaRepository.GetCategoriasProdutos().ToList();    
+                var categoria = _uof.CategoriaRepository.GetCategoriasProdutos().ToList();
+                var categoriaDTO = _mapper.Map<List<CategoriaDTO>>(categoria);
+
+                return categoriaDTO;
             }
             catch (Exception e)
             {
@@ -47,11 +54,14 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> GetAllAsync()
+        public ActionResult<IEnumerable<CategoriaDTO>> GetAllAsync()
         {
             try
             {
-                return _uof.CategoriaRepository.Get().ToList();    
+                var categoria = _uof.CategoriaRepository.Get().ToList();
+                var categoriasDTO = _mapper.Map<List<CategoriaDTO>>(categoria);
+
+                return categoriasDTO;
             }
             catch (Exception e)
             {
@@ -62,11 +72,16 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Categoria> GetByIdAsync(int id)
+        public ActionResult<CategoriaDTO> GetByIdAsync(int id)
         {
             try
             {
-                return _uof.CategoriaRepository.GetById(c => c.CategoriaId == id); 
+                var categoria = _uof.CategoriaRepository.GetById(c => c.CategoriaId == id);
+                if (categoria == null)  return NotFound();
+
+                var categoriaDTO = _mapper.Map<CategoriaDTO>(categoria);
+
+                return categoriaDTO;
             }
             catch (Exception e)
             {
@@ -79,14 +94,18 @@ namespace MimicAPI.V1.Controllers
         // POST Methods - Categorias Controller
         #region POST Methods
         [HttpPost]
-        public ActionResult Post([FromBody]Categoria categoria)
+        public ActionResult Post([FromBody]CategoriaDTO categoriaDTO)
         {
             try
             {
+                var categoria = _mapper.Map<Categoria>(categoriaDTO);
+
                 _uof.CategoriaRepository.Add(categoria);
                 _uof.Commit();
 
-                return Ok();
+                 var categoriaResultDTO = _mapper.Map<CategoriaDTO>(categoria);
+
+                return Ok(categoriaResultDTO);
             }
             catch (Exception e)
             {
@@ -99,11 +118,13 @@ namespace MimicAPI.V1.Controllers
         // UPDATE Methods - Categorias Controller
         #region PUT Methods 
         [HttpPut("{id}")]
-        public ActionResult Update(int id, Categoria categoria)
+        public ActionResult Update(int id, CategoriaDTO categoriaDTO)
         {
             try
             {
-                if (id != categoria.CategoriaId) return BadRequest();
+                if (id != categoriaDTO.CategoriaId) return BadRequest();
+
+                var categoria = _mapper.Map<Categoria>(categoriaDTO);
 
                 _uof.CategoriaRepository.Update(categoria);
                 _uof.Commit();
@@ -121,7 +142,7 @@ namespace MimicAPI.V1.Controllers
         // DELETE Methods - Categorias Controller
         #region DELETE Methods
         [HttpDelete("{id}")]
-        public ActionResult<Produto> Delete(int id)
+        public ActionResult<CategoriaDTO> Delete(int id)
         {
             try
             {

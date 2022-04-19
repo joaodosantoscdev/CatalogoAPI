@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using CatalogoAPI.Repositories.Interfaces;
+using CatalogoAPI.DTOs;
+using AutoMapper;
 
 namespace MimicAPI.V1.Controllers
 {
@@ -18,26 +20,34 @@ namespace MimicAPI.V1.Controllers
         // Constructor and Dependencies
         #region DI Injected
         private readonly IUnitOfWork _uof;
-        public ProdutosController(IUnitOfWork uof) 
+        private readonly IMapper _mapper;
+        public ProdutosController(IUnitOfWork uof, IMapper mapper) 
         {
             _uof = uof;
+            _mapper = mapper;
         }
         #endregion
 
         // GET Methods - Produtos Controller
         #region GET Methods
         [HttpGet("produtoPreco")]
-        public ActionResult<IEnumerable<Produto>> GetProdutoPrecos()
+        public ActionResult<IEnumerable<ProdutoDTO>> GetProdutoPrecos()
         {
-            return _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+            var produtos = _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+            var produtoDTO = _mapper.Map<List<ProdutoDTO>>(produtos);
+
+            return produtoDTO;
         }
 
         [HttpGet("")]
-        public ActionResult<IEnumerable<Produto>> GetAll()
+        public ActionResult<IEnumerable<ProdutoDTO>> GetAll()
         {
             try 
             {
-                return _uof.ProdutoRepository.Get().ToList();
+                var produtos = _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+                var produtoDTO = _mapper.Map<List<ProdutoDTO>>(produtos);
+
+                return produtoDTO;
             }
             catch (Exception e)
             {
@@ -47,14 +57,16 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Produto> GetById(int id)
+        public ActionResult<ProdutoDTO> GetById(int id)
         {
             try 
             {
                 var produtoFiltrado = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
                 if (produtoFiltrado == null) return NotFound();
+
+                var produtoDTO = _mapper.Map<ProdutoDTO>(produtoFiltrado);
             
-                return Ok(produtoFiltrado);
+                return Ok(produtoDTO);
             }
             catch (Exception e) 
             {
@@ -67,14 +79,17 @@ namespace MimicAPI.V1.Controllers
         // POST Methods - Produtos Controller
         #region POST Methods
         [HttpPost]
-        public ActionResult Post([FromBody]Produto produto)
+        public ActionResult Post([FromBody]ProdutoDTO produtoDTO)
         {
             try 
             {
+                var produto = _mapper.Map<Produto>(produtoDTO);
                 _uof.ProdutoRepository.Add(produto);
                 _uof.Commit();
 
-                return Ok(produto);
+                var produtoResultDTO = _mapper.Map<ProdutoDTO>(produto);
+
+                return Ok(produtoResultDTO);
             } 
             catch (Exception e)
             {
@@ -90,11 +105,13 @@ namespace MimicAPI.V1.Controllers
         // UPDATE Methods - Produtos Controller
         #region PUT Methods
         [HttpPut("{id}")]
-        public ActionResult Update(int id, Produto produto)
+        public ActionResult Update(int id, ProdutoDTO produtoDTO)
         { 
             try 
             {
-                if(id != produto.ProdutoId) return BadRequest();
+                if(id != produtoDTO.ProdutoId) return BadRequest();
+
+                var produto = _mapper.Map<Produto>(produtoDTO);
 
                 _uof.ProdutoRepository.Update(produto);
                 _uof.Commit();
@@ -112,7 +129,7 @@ namespace MimicAPI.V1.Controllers
         // DELETE Methods - Produto Controller
         #region DELETE Methods
         [HttpDelete("{id}")]
-        public ActionResult<Produto> Delete(int id)
+        public ActionResult<ProdutoDTO> Delete(int id)
         {
             try 
             {            

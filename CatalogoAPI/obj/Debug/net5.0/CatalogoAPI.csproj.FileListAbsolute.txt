@@ -40,3 +40,9 @@
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Newtonsoft.Json.dll
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Newtonsoft.Json.Bson.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/AutoMapper.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.Options.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.Primitives.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/System.Runtime.CompilerServices.Unsafe.dll
