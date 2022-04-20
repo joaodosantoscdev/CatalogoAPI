@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using CatalogoAPI.Context;
 using CatalogoAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CatalogoAPI.Repositories
 {
@@ -21,9 +22,9 @@ namespace CatalogoAPI.Repositories
             return _context.Set<T>().AsNoTracking();
         }
 
-        public T GetById(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetById(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().SingleOrDefault(predicate);
+            return await _context.Set<T>().AsNoTracking().SingleOrDefaultAsync(predicate);
         }
 
         public void Add(T entity)
