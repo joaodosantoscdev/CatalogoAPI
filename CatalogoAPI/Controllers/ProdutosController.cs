@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using CatalogoAPI.Repositories.Interfaces;
 using CatalogoAPI.DTOs;
 using AutoMapper;
+using CatalogoAPI.Pagination;
+using Newtonsoft.Json;
 
 namespace MimicAPI.V1.Controllers
 {
@@ -31,20 +33,33 @@ namespace MimicAPI.V1.Controllers
         // GET Methods - Produtos Controller
         #region GET Methods
         [HttpGet("produtoPreco")]
-        public ActionResult<IEnumerable<ProdutoDTO>> GetProdutoPrecos()
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutoPrecos()
         {
-            var produtos = _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+            var produtos = await _uof.ProdutoRepository.GetProdutosPorPreco();
             var produtoDTO = _mapper.Map<List<ProdutoDTO>>(produtos);
 
             return produtoDTO;
         }
 
         [HttpGet("")]
-        public ActionResult<IEnumerable<ProdutoDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAll([FromQuery]ProdutosParameters produtosParameters)
         {
             try 
             {
-                var produtos = _uof.ProdutoRepository.GetProdutosPorPreco().ToList();
+                var produtos = await _uof.ProdutoRepository.GetProdutos(produtosParameters);
+
+                var metadata = new 
+                {
+                    produtos.TotalCount,
+                    produtos.PageSize,
+                    produtos.CurrentPage,
+                    produtos.TotalPages,
+                    produtos.HasPrevious,
+                    produtos.HasNext
+                };
+
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
                 var produtoDTO = _mapper.Map<List<ProdutoDTO>>(produtos);
 
                 return produtoDTO;
@@ -57,11 +72,11 @@ namespace MimicAPI.V1.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ProdutoDTO> GetById(int id)
+        public async Task<ActionResult<ProdutoDTO>> GetById(int id)
         {
             try 
             {
-                var produtoFiltrado = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
+                var produtoFiltrado = await _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
                 if (produtoFiltrado == null) return NotFound();
 
                 var produtoDTO = _mapper.Map<ProdutoDTO>(produtoFiltrado);
@@ -79,13 +94,13 @@ namespace MimicAPI.V1.Controllers
         // POST Methods - Produtos Controller
         #region POST Methods
         [HttpPost]
-        public ActionResult Post([FromBody]ProdutoDTO produtoDTO)
+        public async Task<ActionResult> Post([FromBody]ProdutoDTO produtoDTO)
         {
             try 
             {
                 var produto = _mapper.Map<Produto>(produtoDTO);
                 _uof.ProdutoRepository.Add(produto);
-                _uof.Commit();
+                await _uof.Commit();
 
                 var produtoResultDTO = _mapper.Map<ProdutoDTO>(produto);
 
@@ -105,7 +120,7 @@ namespace MimicAPI.V1.Controllers
         // UPDATE Methods - Produtos Controller
         #region PUT Methods
         [HttpPut("{id}")]
-        public ActionResult Update(int id, ProdutoDTO produtoDTO)
+        public async Task<ActionResult> Update(int id, ProdutoDTO produtoDTO)
         { 
             try 
             {
@@ -114,7 +129,7 @@ namespace MimicAPI.V1.Controllers
                 var produto = _mapper.Map<Produto>(produtoDTO);
 
                 _uof.ProdutoRepository.Update(produto);
-                _uof.Commit();
+                await _uof.Commit();
 
                 return Ok();
             } 
@@ -129,11 +144,11 @@ namespace MimicAPI.V1.Controllers
         // DELETE Methods - Produto Controller
         #region DELETE Methods
         [HttpDelete("{id}")]
-        public ActionResult<ProdutoDTO> Delete(int id)
+        public async Task<ActionResult<ProdutoDTO>> Delete(int id)
         {
             try 
             {            
-                var produtoFiltrado = _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
+                var produtoFiltrado =  await _uof.ProdutoRepository.GetById(p => p.ProdutoId == id);
                  /* The Find(); method works too, searching first on memory,
                   but only if ID is a primary key */
 
@@ -141,7 +156,7 @@ namespace MimicAPI.V1.Controllers
                 if (produtoFiltrado == null) return NotFound();
 
                 _uof.ProdutoRepository.Delete(produtoFiltrado);
-                _uof.Commit();
+                await _uof.Commit();
 
                 return Ok(new {message = "Deletado"});
             }
