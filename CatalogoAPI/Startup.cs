@@ -63,13 +63,13 @@ namespace CatalogoAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CatalogoAPI v1"));
             }
 
-            loggerFactory.AddProvider(
+  /*           loggerFactory.AddProvider(
                 new CustomLogProvider(
                     new CustomLogProviderConfiguration 
                     {
                         LogLevel = LogLevel.Information
                     }
-                ));
+                )); */
 
             app.UseHttpsRedirection();
 
