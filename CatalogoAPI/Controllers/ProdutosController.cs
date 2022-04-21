@@ -13,7 +13,7 @@ using AutoMapper;
 using CatalogoAPI.Pagination;
 using Newtonsoft.Json;
 
-namespace MimicAPI.V1.Controllers
+namespace CatalogoAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

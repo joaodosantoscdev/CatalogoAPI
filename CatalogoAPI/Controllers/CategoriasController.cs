@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -12,9 +13,11 @@ using CatalogoAPI.Repositories.Interfaces;
 using CatalogoAPI.DTOs;
 using CatalogoAPI.Pagination;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
-namespace MimicAPI.V1.Controllers
+namespace CatalogoAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("[controller]")]
     public class CategoriasController : ControllerBase
