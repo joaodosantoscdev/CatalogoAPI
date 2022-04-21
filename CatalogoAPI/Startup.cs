@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,11 +8,15 @@ using Microsoft.OpenApi.Models;
 using CatalogoAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 using CatalogoAPI.Logging;
 using CatalogoAPI.Repositories;
 using CatalogoAPI.Repositories.Interfaces;
 using CatalogoAPI.DTOs.Mappings;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 
 namespace CatalogoAPI
 {
@@ -39,6 +44,25 @@ namespace CatalogoAPI
                 opt => opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<CatalogoDbContext>()
+                    .AddDefaultTokenProviders();
+
+            services.AddAuthentication(
+                JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                    opt.TokenValidationParameters = new TokenValidationParameters 
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidAudience = Configuration["TOkenConfiguration:Audience"],
+                        ValidIssuer = Configuration["TokenConfiguration:Issuer"],
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["Jwt:key"]))
+                    });
+
             services.AddSingleton(mapper);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -47,9 +71,11 @@ namespace CatalogoAPI
                         opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore 
                 );
 
-            services.AddSwaggerGen(c =>
+            services.AddCors();
+
+            services.AddSwaggerGen(opt =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CatalogoAPI", Version = "v1" });
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "CatalogoAPI", Version = "v1" });
             });
         }
 
@@ -75,7 +101,14 @@ namespace CatalogoAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors(c => 
+                c.AllowAnyHeader()
+                 .AllowAnyMethod()
+                 .AllowAnyOrigin()
+            );
 
             app.UseEndpoints(endpoints =>
             {

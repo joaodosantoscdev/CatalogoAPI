@@ -46,3 +46,15 @@
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.Options.dll
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.Primitives.dll
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/System.Runtime.CompilerServices.Unsafe.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.Identity.Core.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.Logging.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.Protocols.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.Tokens.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/System.IdentityModel.Tokens.Jwt.dll
