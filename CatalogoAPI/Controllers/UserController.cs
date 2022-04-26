@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CatalogoAPI.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogoAPI.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("[controller]")]
@@ -41,6 +42,7 @@ namespace CatalogoAPI.Controllers
         ///     Retorna as categorias e seus respectivos produtos
         /// </summary>
         /// <returns></returns>
+        
         [HttpGet("produtos")]
         public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategoriasProdutosAsync()
         {

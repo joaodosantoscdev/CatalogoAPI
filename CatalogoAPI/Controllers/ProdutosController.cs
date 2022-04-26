@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Security;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -12,9 +14,12 @@ using CatalogoAPI.DTOs;
 using AutoMapper;
 using CatalogoAPI.Pagination;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogoAPI.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("[controller]")]
     public class ProdutosController : ControllerBase
