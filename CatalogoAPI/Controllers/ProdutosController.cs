@@ -32,6 +32,10 @@ namespace CatalogoAPI.Controllers
 
         // GET Methods - Produtos Controller
         #region GET Methods
+        /// <summary>
+        ///     Retorna produtos ordenados por preços
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("produtoPreco")]
         public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutoPrecos()
         {
@@ -41,6 +45,11 @@ namespace CatalogoAPI.Controllers
             return produtoDTO;
         }
 
+        /// <summary>
+        ///     Retorna todos os produtos da base de dados
+        /// </summary>
+        /// <param name="produtosParameters"></param>
+        /// <returns></returns>
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetAll([FromQuery]ProdutosParameters produtosParameters)
         {
@@ -71,6 +80,11 @@ namespace CatalogoAPI.Controllers
             } 
         }
 
+        /// <summary>
+        ///     Retorna um produto pelo ID solicitado na requisição
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoDTO>> GetById(int id)
         {
@@ -93,6 +107,11 @@ namespace CatalogoAPI.Controllers
 
         // POST Methods - Produtos Controller
         #region POST Methods
+        /// <summary>
+        ///     Cria um novo produto na base de dados
+        /// </summary>
+        /// <param name="produtoDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]ProdutoDTO produtoDTO)
         {
@@ -119,6 +138,12 @@ namespace CatalogoAPI.Controllers
 
         // UPDATE Methods - Produtos Controller
         #region PUT Methods
+        /// <summary>
+        ///     Atualiza o produto pelo ID indicado na requisição
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="produtoDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, ProdutoDTO produtoDTO)
         { 
@@ -143,6 +168,11 @@ namespace CatalogoAPI.Controllers
 
         // DELETE Methods - Produto Controller
         #region DELETE Methods
+        /// <summary>
+        ///     Deleta o produto de acordo com ID passado na requisição
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<ProdutoDTO>> Delete(int id)
         {

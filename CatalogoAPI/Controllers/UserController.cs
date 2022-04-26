@@ -30,6 +30,11 @@ namespace CatalogoAPI.Controllers
             _config = config;
         }
 
+        /// <summary>
+        ///     Registra um novo usuário liberando o acesso via Token JWT
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody]UsuarioDTO model) 
         {
@@ -50,6 +55,11 @@ namespace CatalogoAPI.Controllers
             return Ok(GenerateToken(model));
         }
 
+        /// <summary>
+        ///     Efetua o login e libera o JWT Token para acesso as funcionalidades da API
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("login")]
         public async Task<ActionResult> UserLogin([FromBody]UsuarioDTO model)        
         {

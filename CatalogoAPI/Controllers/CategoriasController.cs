@@ -37,6 +37,10 @@ namespace CatalogoAPI.Controllers
 
         // GET Methods - Categorias Controller
         #region GET Methods
+        /// <summary>
+        ///     Retorna as categorias e seus respectivos produtos
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("produtos")]
         public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetCategoriasProdutosAsync()
         {
@@ -57,6 +61,11 @@ namespace CatalogoAPI.Controllers
             }
         }
 
+        /// <summary>
+        ///  Retorna toda as categorias contidas no banco
+        /// </summary>
+        /// <param name="categoriasParameters"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAll([FromQuery]CategoriasParameters categoriasParameters)
         {
@@ -86,6 +95,11 @@ namespace CatalogoAPI.Controllers
             
         }
 
+        /// <summary>
+        ///     Retorna uma categoria pelo ID solicitado 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoriaDTO>> GetById(int id)
         {
@@ -108,6 +122,11 @@ namespace CatalogoAPI.Controllers
 
         // POST Methods - Categorias Controller
         #region POST Methods
+        /// <summary>
+        ///     Cadastra uma nova categoria no banco
+        /// </summary>
+        /// <param name="categoriaDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody]CategoriaDTO categoriaDTO)
         {
@@ -131,7 +150,13 @@ namespace CatalogoAPI.Controllers
         #endregion
 
         // UPDATE Methods - Categorias Controller
-        #region PUT Methods 
+        #region PUT Methods
+        /// <summary>
+        ///     Atualiza uma categoria contida na base de dado de acordo com o ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="categoriaDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, CategoriaDTO categoriaDTO)
         {
@@ -156,6 +181,11 @@ namespace CatalogoAPI.Controllers
 
         // DELETE Methods - Categorias Controller
         #region DELETE Methods
+        /// <summary>
+        ///     Deleta uma categoria de acordo com ID passado na requisição
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<CategoriaDTO>> Delete(int id)
         {
