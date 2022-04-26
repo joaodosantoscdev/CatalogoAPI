@@ -58,3 +58,5 @@
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.IdentityModel.Tokens.dll
 /home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/System.IdentityModel.Tokens.Jwt.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.Versioning.dll
+/home/jaodev/Documents/backend/CatalogoAPI/CatalogoAPI/bin/Debug/net5.0/CatalogoAPI.xml
