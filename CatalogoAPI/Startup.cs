@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +18,9 @@ using CatalogoAPI.DTOs.Mappings;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace CatalogoAPI
 {
@@ -71,11 +75,26 @@ namespace CatalogoAPI
                         opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore 
                 );
 
+            services.AddApiVersioning( opt => {
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+                opt.ReportApiVersions = true;
+            });
+
             services.AddCors();
 
             services.AddSwaggerGen(opt =>
             {
-                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "CatalogoAPI", Version = "v1" });
+                opt.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Title = "CatalogoAPI", 
+                    Version = "v1",
+                    Description = "Catalogo de produtos por categoria" 
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                opt.IncludeXmlComments(xmlPath);
             });
         }
 
