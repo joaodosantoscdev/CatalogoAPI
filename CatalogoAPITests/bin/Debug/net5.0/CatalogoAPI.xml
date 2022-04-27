@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CatalogoAPI</name>
+    </assembly>
+    <members>
+        <member name="M:CatalogoAPI.Controllers.CategoriasController.GetCategoriasProdutosAsync">
+            <summary>
+                Retorna as categorias e seus respectivos produtos
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.CategoriasController.GetAll(CatalogoAPI.Pagination.CategoriasParameters)">
+            <summary>
+             Retorna toda as categorias contidas no banco
+            </summary>
+            <param name="categoriasParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.CategoriasController.GetById(System.Int32)">
+            <summary>
+                Retorna uma categoria pelo ID solicitado 
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.CategoriasController.Post(CatalogoAPI.DTOs.CategoriaDTO)">
+            <summary>
+                Cadastra uma nova categoria no banco
+            </summary>
+            <param name="categoriaDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.CategoriasController.Update(System.Int32,CatalogoAPI.DTOs.CategoriaDTO)">
+            <summary>
+                Atualiza uma categoria contida na base de dado de acordo com o ID
+            </summary>
+            <param name="id"></param>
+            <param name="categoriaDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.CategoriasController.Delete(System.Int32)">
+            <summary>
+                Deleta uma categoria de acordo com ID passado na requisição
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.ProdutosController.GetProdutoPrecos">
+            <summary>
+                Retorna produtos ordenados por preços
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.ProdutosController.GetAll(CatalogoAPI.Pagination.ProdutosParameters)">
+            <summary>
+                Retorna todos os produtos da base de dados
+            </summary>
+            <param name="produtosParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.ProdutosController.GetById(System.Int32)">
+            <summary>
+                Retorna um produto pelo ID solicitado na requisição
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.ProdutosController.Post(CatalogoAPI.DTOs.ProdutoDTO)">
+            <summary>
+                Cria um novo produto na base de dados
+            </summary>
+            <param name="produtoDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.ProdutosController.Update(System.Int32,CatalogoAPI.DTOs.ProdutoDTO)">
+            <summary>
+                Atualiza o produto pelo ID indicado na requisição
+            </summary>
+            <param name="id"></param>
+            <param name="produtoDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.ProdutosController.Delete(System.Int32)">
+            <summary>
+                Deleta o produto de acordo com ID passado na requisição
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.UserController.RegisterUser(CatalogoAPI.DTOs.UsuarioDTO)">
+            <summary>
+                Registra um novo usuário liberando o acesso via Token JWT
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CatalogoAPI.Controllers.UserController.UserLogin(CatalogoAPI.DTOs.UsuarioDTO)">
+            <summary>
+                Efetua o login e libera o JWT Token para acesso as funcionalidades da API
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
