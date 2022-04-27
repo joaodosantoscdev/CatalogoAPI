@@ -26,12 +26,12 @@ namespace CatalogoAPI.Controllers
         // Constructor and Dependencies
         #region DI Injected
         private readonly IUnitOfWork _uof;
-        private readonly ILogger _logger;
+        // private readonly ILogger _logger;
         private readonly IMapper _mapper;
-        public CategoriasController(IUnitOfWork uof, ILogger<CategoriasController> logger, IMapper mapper) 
+        public CategoriasController(IUnitOfWork uof, IMapper mapper) 
         {
             _uof = uof;
-            _logger = logger;
+            // _logger = logger;
             _mapper = mapper;
         }
         #endregion
